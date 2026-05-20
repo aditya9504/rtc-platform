@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-family: 'Inter', system-ui, sans-serif; }
+  body { @apply bg-bg-primary text-text-primary; }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-bg-card border border-border rounded-2xl backdrop-blur-sm;
+    background: linear-gradient(135deg, rgba(20, 28, 46, 0.8) 0%, rgba(17, 24, 39, 0.9) 100%);
+  }
+  .btn-primary {
+    @apply bg-accent-purple hover:bg-accent-purple-light text-white font-medium px-4 py-2 rounded-xl transition-all duration-200 hover:shadow-glow active:scale-95;
+  }
+  .btn-secondary {
+    @apply bg-bg-tertiary hover:bg-bg-hover text-text-primary border border-border font-medium px-4 py-2 rounded-xl transition-all duration-200 active:scale-95;
+  }
+  .btn-danger {
+    @apply bg-accent-red/20 hover:bg-accent-red/30 text-accent-red border border-accent-red/30 font-medium px-4 py-2 rounded-xl transition-all duration-200;
+  }
+  .input-field {
+    @apply bg-bg-tertiary border border-border text-text-primary placeholder-text-muted rounded-xl px-4 py-2.5 w-full focus:outline-none focus:border-accent-purple focus:ring-1 focus:ring-accent-purple/50 transition-all duration-200;
+  }
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-bg-hover;
+  }
+  .sidebar-item.active {
+    @apply text-text-primary bg-accent-purple/20 border border-accent-purple/30;
+  }
+  .status-badge {
+    @apply text-xs font-medium px-2.5 py-1 rounded-lg;
+  }
+}
+
+/* Monaco editor overrides */
+.monaco-editor .suggest-widget {
+  z-index: 9999 !important;
+}
+.monaco-editor .parameter-hints-widget {
+  z-index: 9999 !important;
+}
+.overflow-guard {
+  overflow: visible !important;
+}
+
+/* Smooth scrolling */
+* { scroll-behavior: smooth; }
+
+/* Selection */
+::selection { background: rgba(124, 58, 237, 0.3); }
+
+/* Loading dots */
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+.loading-dot { animation: dot-bounce 1.4s infinite ease-in-out both; }
+.loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+/* Cursor blink */
+@keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.cursor-blink { animation: cursor-blink 1s step-end infinite; }
