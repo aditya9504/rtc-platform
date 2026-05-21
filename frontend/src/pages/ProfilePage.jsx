@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile } from '../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { updateProfile, logout } from '../redux/slices/authSlice';
 import {
   User, Github, Code2, Save, Loader2, Edit3,
   Star, GitPullRequest, MessageSquareCode, Users,
-  Award, Calendar, CheckCircle
+  Award, Calendar, CheckCircle, LogOut
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
@@ -28,6 +29,7 @@ const StatBadge = ({ icon: Icon, label, value, color }) => (
 export default function ProfilePage() {
   const { user, loading } = useSelector(s => s.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     bio: user?.bio || '',
@@ -46,6 +48,12 @@ export default function ProfilePage() {
     } else {
       toast.error(res.payload || 'Update failed');
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success('Logged out successfully');
+    navigate('/login');
   };
 
   const toggleSkill = (skill) => {
@@ -81,17 +89,26 @@ export default function ProfilePage() {
                 <h2 className="text-2xl font-bold text-text-primary">{user?.username}</h2>
                 <p className="text-text-muted text-sm">{user?.email}</p>
               </div>
-              <button
-                onClick={() => editing ? handleSave() : setEditing(true)}
-                disabled={loading}
-                className="btn-primary flex items-center gap-2 text-sm flex-shrink-0"
-              >
-                {loading ? <Loader2 size={14} className="animate-spin" />
-                  : saved ? <CheckCircle size={14} />
-                  : editing ? <Save size={14} />
-                  : <Edit3 size={14} />}
-                {editing ? (loading ? 'Saving...' : 'Save') : 'Edit Profile'}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => editing ? handleSave() : setEditing(true)}
+                  disabled={loading}
+                  className="btn-primary flex items-center gap-2 text-sm flex-shrink-0"
+                >
+                  {loading ? <Loader2 size={14} className="animate-spin" />
+                    : saved ? <CheckCircle size={14} />
+                    : editing ? <Save size={14} />
+                    : <Edit3 size={14} />}
+                  {editing ? (loading ? 'Saving...' : 'Save') : 'Edit Profile'}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="btn-secondary flex items-center gap-2 text-sm flex-shrink-0 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 transition-colors"
+                >
+                  <LogOut size={14} />
+                  Logout
+                </button>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-text-muted">
               {user?.githubUrl && !editing && (
